@@ -11,7 +11,8 @@
 			android:layout_height="wrap_content"
 			android:src="@drawable/play_pause_override"
 			android:background="@null"
-			android:layout_gravity="center_horizontal" />
+			android:layout_gravity="center_horizontal"
+			android:contentDescription="Play/Pause" />
 
 	<ImageButton
 			android:id="@+id/nextTrackButton"
@@ -28,14 +29,14 @@
 			android:layout_gravity="center_horizontal">
 
 		<ImageButton
-				android:id="@+id/nextTrackButton"
+				android:id="@+id/thumbsDownButton"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:src="@drawable/thumbs_down_override"
 				android:background="@null" />
 
 		<ImageButton
-				android:id="@+id/nextTrackButton"
+				android:id="@+id/thumbsUpButton"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:src="@drawable/thumbs_up_override"
