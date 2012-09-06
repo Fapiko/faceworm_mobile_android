@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import org.zeromq.ZMQ;
 
 public class FacewormMobileAndroid extends Activity {
 
@@ -24,6 +25,13 @@ public class FacewormMobileAndroid extends Activity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+
+		ZMQ.Context context = ZMQ.context(1);
+		ZMQ.Socket socket = context.socket(ZMQ.PAIR);
+
+		socket.connect("tcp://192.168.0.9:5555");
+
+		socket.send("FACEWORM".getBytes(), 0);
 
 		addButtonListeners();
 
@@ -67,7 +75,9 @@ public class FacewormMobileAndroid extends Activity {
 		@Override
 		public void onClick(View view) {
 
-			Log.d(TAG, "Button pressed: " + buttonId);
+			Log.v(TAG, "Button pressed: " + buttonId);
+
+
 
 		}
 	}
