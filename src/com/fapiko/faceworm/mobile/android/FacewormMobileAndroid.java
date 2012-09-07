@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import org.zeromq.ZMQ;
 
+import java.text.BreakIterator;
+
 public class FacewormMobileAndroid extends Activity {
 
 	public final String TAG = "FacewormMobileAndroid";
@@ -17,6 +19,7 @@ public class FacewormMobileAndroid extends Activity {
 	private ImageButton nextTrackButton;
 	private ImageButton thumbsUpButton;
 	private ImageButton thumbsDownButton;
+	private ZMQ.Socket socket;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -27,14 +30,15 @@ public class FacewormMobileAndroid extends Activity {
 		setContentView(R.layout.main);
 
 		ZMQ.Context context = ZMQ.context(1);
-		ZMQ.Socket socket = context.socket(ZMQ.PAIR);
-
-		socket.connect("tcp://192.168.0.9:5555");
-
-		socket.send("FACEWORM".getBytes(), 0);
+		socket = context.socket(ZMQ.PAIR);
+		socket.connect("tcp://172.16.1.6:5555");
 
 		addButtonListeners();
 
+	}
+
+	protected ZMQ.Socket getSocket() {
+		return socket;
 	}
 
 	public void addButtonListeners() {
@@ -77,7 +81,31 @@ public class FacewormMobileAndroid extends Activity {
 
 			Log.v(TAG, "Button pressed: " + buttonId);
 
+			StringBuffer message = new StringBuffer("ACTION|");
 
+			switch(buttonId) {
+				case PLAYPAUSE:
+					message.append("PLAY_PAUSE");
+					break;
+
+				case NEXTTRACK:
+					message.append("NEXT_TRACK");
+					break;
+
+				case THUMBSDOWN:
+					message.append("THUMBS_DOWN");
+					break;
+
+				case THUMBSUP:
+					message.append("THUMBS_UP");
+					break;
+
+				default:
+					Log.w(TAG, "Unknown buttonId pressed: " + buttonId);
+
+			}
+
+			parent.getSocket().send(String.valueOf(message).getBytes(), 0);
 
 		}
 	}
